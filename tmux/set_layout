@@ -1,0 +1,9 @@
+#!/bin/bash
+tmux_width=$(tmux display-message -p "#{window_width}")
+tmux_height=$(tmux display-message -p "#{window_height}")
+
+if [ $((tmux_width / 2)) -ge "$tmux_height" ]; then
+    tmux select-layout even-horizontal
+else
+    tmux select-layout even-vertical
+fi

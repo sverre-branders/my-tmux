@@ -11,14 +11,33 @@ if [ $# -eq 0 ]; then
         case "$response" in
             [yY][eE][sS]|[yY])
                 echo "Linking tmux.conf file and overwriting"
-		rm $HOME/.tmux.conf
-        	ln -rsf tmux.conf $HOME/.tmux.conf
+                rm $HOME/.tmux.conf
+                ln -rsf tmux.conf $HOME/.tmux.conf
                 ;;
             *)
                 echo "skipped."
                 ;;
         esac
     fi
+
+    if [ ! -e $HOME/.config/tmux ]; then
+        echo "Linking .config/tmux directory"
+        ln -rsf tmux/ $HOME/.config/tmux
+    else
+        echo "Warning: .config/tmux already exists."
+        read -r -p "Are you sure you want to overwrite it? [y/N] " response
+        case "$response" in
+            [yY][eE][sS]|[yY])
+                echo "Linking .config/tmux directory and overwriting"
+                rm -r $HOME/.config/tmux
+                ln -rsf tmux/ $HOME/.config/tmux
+                ;;
+            *)
+                echo "skipped."
+                ;;
+        esac
+    fi
+
     else
         echo "Run this script to link tmux.conf from this repository to $HOME/.tmux.conf"
 fi
